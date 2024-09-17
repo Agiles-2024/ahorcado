@@ -1,0 +1,11 @@
+﻿################################################################################
+# Este archivo .gitignore ha sido creado automáticamente por Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/ahorcado/CopilotIndices/0.2.1627.58842
+/.vs/ahorcado/v17
+/.vs
+/AhocadoTest/bin/Debug/net8.0
+/AhocadoTest/obj
+/AhorcadoLibreria/bin/Debug/net8.0
+/AhorcadoLibreria/obj
