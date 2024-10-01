@@ -16,8 +16,10 @@ namespace AhocadoTest
             Sut = new Ahorcado("hola");
         }
 
-        [TestMethod]
-        public void IngresaLetraVerificaNoValidezNumero()
+		#region Test de ingresar letra
+		[TestMethod]
+        [TestCategory("Ingresar letra")]
+		public void IngresaLetraVerificaNoValidezNumero()
         {
             // Act
             var resultado = Sut.IngresarLetra('2');
@@ -26,8 +28,9 @@ namespace AhocadoTest
             Assert.IsFalse(resultado);
         }
 
+        [TestCategory("Ingresar letra")]
         [TestMethod]
-        public void IngresaLetraVerificaNoValidezLetraTilde()
+		public void IngresaLetraVerificaNoValidezLetraTilde()
         {
             // Act
             var resultado = Sut.IngresarLetra('é');
@@ -37,7 +40,8 @@ namespace AhocadoTest
         }
 
         [TestMethod]
-        public void IngresaLetraVerificaNoValidezCaracteresEspeciales()
+        [TestCategory("Ingresar letra")]
+		public void IngresaLetraVerificaNoValidezCaracteresEspeciales()
         {
             // Act
             var resultado = Sut.IngresarLetra('#');
@@ -47,7 +51,8 @@ namespace AhocadoTest
         }
 
         [TestMethod]
-        public void IngresaLetraVerificaSiPerteneceAPalabra()
+        [TestCategory("Ingresar letra")]
+		public void IngresaLetraVerificaSiPerteneceAPalabra()
         {
             // Act
             var resultado = Sut.IngresarLetra('a');
@@ -57,7 +62,8 @@ namespace AhocadoTest
         }
 
         [TestMethod]
-        public void IngresaLetraVerificaNoPerteneceAPalabra()
+        [TestCategory("Ingresar letra")]
+		public void IngresaLetraVerificaNoPerteneceAPalabra()
         {
             // Act
             var resultado = Sut.IngresarLetra('w');
@@ -67,7 +73,8 @@ namespace AhocadoTest
         }
 
         [TestMethod]
-        public void IngresaLetraVerificaSiPerteneceAPalabraAunSiendoMayuscula()
+        [TestCategory("Ingresar letra")]
+		public void IngresaLetraVerificaSiPerteneceAPalabraAunSiendoMayuscula()
         {
             // Act
             var resultado = Sut.IngresarLetra('A');
@@ -91,7 +98,8 @@ namespace AhocadoTest
         //}
 
         [TestMethod]
-        public void IngresaLetraMarcaComoAdivinadaSiPerteneceAPalabra()
+        [TestCategory("Ingresar letra")]
+		public void IngresaLetraMarcaComoAdivinadaSiPerteneceAPalabra()
         {
             var expectedResult = new List<WrapperLetra>()
             {
@@ -107,6 +115,61 @@ namespace AhocadoTest
             // Assert
             Sut.Adivinadas.Should().BeEquivalentTo(expectedResult);
         }
+        #endregion
 
-    }
+        #region Test Arriesgar palabra
+        [TestCategory("Arriesgar palabra")]
+		[TestMethod]
+		public void ArriesgarPalabraVerificaNoValidezNumero()
+		{
+
+			// Act
+			var resultado = Sut.ArriesgarPalabra("7");
+
+			// Assert
+			Assert.AreEqual(EnumResultados.NoEsUnaPalabraValida, resultado);
+
+		}
+
+		[TestCategory("Arriesgar palabra")]
+		[TestMethod]
+		public void ArriesgarPalabraVerificaNoValidezCaracteresEspeciales()
+		{
+
+			// Act
+			var resultado = Sut.ArriesgarPalabra("hola$");
+
+			// Assert
+			Assert.AreEqual(EnumResultados.NoEsUnaPalabraValida, resultado);
+
+		}
+
+		[TestCategory("Arriesgar palabra")]
+		[TestMethod]
+		public void ArriesgarPalabraVerificaNoValidezLetraTilde()
+		{
+
+			// Act
+			var resultado = Sut.ArriesgarPalabra("hóla");
+
+			// Assert
+			Assert.AreEqual(EnumResultados.NoEsUnaPalabraValida, resultado);
+
+		}
+
+		[TestCategory("Arriesgar palabra")]
+		[TestMethod]
+		public void ArriesgarPalabraVerificaPalabraCorrecta()
+		{
+
+			// Act
+			var resultado = Sut.ArriesgarPalabra("hola");
+
+			// Assert
+			Assert.AreEqual(EnumResultados.Ganaste, resultado);
+
+		}
+		#endregion
+
+	}
 }

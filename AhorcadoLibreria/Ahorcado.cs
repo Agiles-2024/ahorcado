@@ -35,5 +35,18 @@ namespace AhorcadoLibreria
 
             return true;
         }
-    }
+
+		public EnumResultados ArriesgarPalabra(string palabra)
+		{
+			var valido = Regex.IsMatch(palabra, @"^[a-zA-Z]+$");
+
+            if (!valido)
+                return EnumResultados.NoEsUnaPalabraValida;
+
+			if (palabra.Equals(Palabra, StringComparison.OrdinalIgnoreCase))
+				return  EnumResultados.Ganaste;
+			else
+				return  EnumResultados.Perdiste;
+		}
+	}
 }
