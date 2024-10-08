@@ -1,4 +1,5 @@
 using AhorcadoLibreria;
+using AhorcadoLibreria.Constants;
 using FluentAssertions;
 using Moq;
 
@@ -8,12 +9,15 @@ namespace AhocadoTest
     public class AhorcadoTest
     {
         public Ahorcado Sut { get; set; }
-
+        
+        public string PalabraCorrecta { get; set; }
+        
         [TestInitialize]
         public void Inicializar()
         {
             // Inicializar
-            Sut = new Ahorcado("hola");
+            PalabraCorrecta ="hola";
+            Sut = new Ahorcado(PalabraCorrecta);
         }
 
 		#region Test de ingresar letra
@@ -83,20 +87,6 @@ namespace AhocadoTest
             Assert.IsTrue(resultado);
         }
 
-        //[TestMethod]
-        //public void IngresaLetraNoModificarLasYaAdivinadas()
-        //{
-        //    //Arrange
-        //    var cantidadYaAdivinadas = Sut.Where(l => l.IsAdivinada && !l.letra.Equals('A', StringComparison.OrdinalIgnoreCase)).count;
-
-        //    // Act
-        //    var resultado = Sut.IngresarLetra('A');
-        //    var cantidadYaAdivinadasPost = Sut.Where(l => l.IsAdivinada && !l.letra.Equals('A', StringComparison.OrdinalIgnoreCase)).count;
-
-        //    // Assert
-        //    Assert.Equal(cantidadYaAdivinadas, cantidadYaAdivinadasPost);
-        //}
-
         [TestMethod]
         [TestCategory("Ingresar letra")]
 		public void IngresaLetraMarcaComoAdivinadaSiPerteneceAPalabra()
@@ -122,54 +112,45 @@ namespace AhocadoTest
 		[TestMethod]
 		public void ArriesgarPalabraVerificaNoValidezNumero()
 		{
-
 			// Act
 			var resultado = Sut.ArriesgarPalabra("7");
 
 			// Assert
 			Assert.AreEqual(EnumResultados.NoEsUnaPalabraValida, resultado);
-
 		}
 
 		[TestCategory("Arriesgar palabra")]
 		[TestMethod]
 		public void ArriesgarPalabraVerificaNoValidezCaracteresEspeciales()
 		{
-
 			// Act
 			var resultado = Sut.ArriesgarPalabra("hola$");
 
 			// Assert
 			Assert.AreEqual(EnumResultados.NoEsUnaPalabraValida, resultado);
-
 		}
 
 		[TestCategory("Arriesgar palabra")]
 		[TestMethod]
 		public void ArriesgarPalabraVerificaNoValidezLetraTilde()
 		{
-
 			// Act
 			var resultado = Sut.ArriesgarPalabra("hóla");
 
 			// Assert
 			Assert.AreEqual(EnumResultados.NoEsUnaPalabraValida, resultado);
-
 		}
 
 		[TestCategory("Arriesgar palabra")]
 		[TestMethod]
 		public void ArriesgarPalabraVerificaPalabraCorrecta()
 		{
-
 			// Act
-			var resultado = Sut.ArriesgarPalabra("hola");
+			var resultado = Sut.ArriesgarPalabra(PalabraCorrecta);
 
 			// Assert
 			Assert.AreEqual(EnumResultados.Ganaste, resultado);
-
 		}
-		#endregion
-
-	}
+        #endregion
+    }
 }

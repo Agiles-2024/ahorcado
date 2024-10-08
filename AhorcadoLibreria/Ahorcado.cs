@@ -1,5 +1,6 @@
 ﻿
 using System.Text.RegularExpressions;
+using AhorcadoLibreria.Constants;
 
 namespace AhorcadoLibreria
 {
@@ -17,7 +18,7 @@ namespace AhorcadoLibreria
 
         public bool IngresarLetra(char letra)
         {
-            var valido = Regex.IsMatch(letra.ToString(), @"^[a-zA-Z]+$");
+            var valido = Regex.IsMatch(letra.ToString(), FixedRegex.NoCaracteresEspecialesNumerosOTildes);
 
             if (!valido)
                 return false;
@@ -38,7 +39,7 @@ namespace AhorcadoLibreria
 
 		public EnumResultados ArriesgarPalabra(string palabra)
 		{
-			var valido = Regex.IsMatch(palabra, @"^[a-zA-Z]+$");
+			var valido = Regex.IsMatch(palabra, FixedRegex.NoCaracteresEspecialesNumerosOTildes);
 
             if (!valido)
                 return EnumResultados.NoEsUnaPalabraValida;
