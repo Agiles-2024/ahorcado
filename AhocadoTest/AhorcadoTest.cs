@@ -91,6 +91,7 @@ namespace AhocadoTest
         [TestCategory("Ingresar letra")]
 		public void IngresaLetraMarcaComoAdivinadaSiPerteneceAPalabra()
         {
+            // Arrange
             var expectedResult = new List<WrapperLetra>()
             {
                 new WrapperLetra{ Letra = 'h', IsAdivinada = false },
@@ -151,6 +152,48 @@ namespace AhocadoTest
 			// Assert
 			Assert.AreEqual(EnumResultados.Ganaste, resultado);
 		}
+        #endregion
+
+        #region estaTerminado
+        [TestMethod]
+        [TestCategory("Ingresar letra")]
+        public void IngresaLetraMarcaComoNoTerminaElJuegoSiQuedanLetrasPorAdivinar()
+        {
+            // Arrange
+            var expectedResult = new List<WrapperLetra>()
+            {
+                new WrapperLetra{ Letra = 'h', IsAdivinada = false },
+                new WrapperLetra{ Letra = 'o', IsAdivinada = false },
+                new WrapperLetra{ Letra = 'l', IsAdivinada = false },
+                new WrapperLetra{ Letra = 'a', IsAdivinada = true },
+            };
+
+            // Act
+            var resultado = Sut.EstaTerminado();
+
+            // Assert
+            resultado.Should().Be(false);
+        }
+
+        [TestMethod]
+        [TestCategory("Ingresar letra")]
+        public void IngresaLetraMarcaComoTerminadoElJuegoSiNoQuedanLetrasPorAdivinar()
+        {
+            // Arrange
+            Sut.Adivinadas = new List<WrapperLetra>()
+            {
+                new WrapperLetra{ Letra = 'h', IsAdivinada = true },
+                new WrapperLetra{ Letra = 'o', IsAdivinada = true },
+                new WrapperLetra{ Letra = 'l', IsAdivinada = true },
+                new WrapperLetra{ Letra = 'a', IsAdivinada = true },
+            };
+
+            // Act
+            var resultado = Sut.EstaTerminado();
+
+            // Assert
+            resultado.Should().Be(true);
+        }
         #endregion
     }
 }

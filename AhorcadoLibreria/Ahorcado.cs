@@ -37,6 +37,8 @@ namespace AhorcadoLibreria
             return true;
         }
 
+
+
 		public EnumResultados ArriesgarPalabra(string palabra)
 		{
 			var valido = Regex.IsMatch(palabra, FixedRegex.NoCaracteresEspecialesNumerosOTildes);
@@ -49,5 +51,10 @@ namespace AhorcadoLibreria
 			else
 				return  EnumResultados.Perdiste;
 		}
-	}
+
+        public bool EstaTerminado()
+        {
+            return !Adivinadas.Any(letra => !letra.IsAdivinada);
+        }
+    }
 }
