@@ -56,5 +56,4 @@ jobs:
             -Dsonar.projectKey=agiles-2024
             -Dsonar.organization=agiles-2024
             -Dsonar.tests= TestResults/**/coverage.cobertura.xml # optional. For more info about Code Coverage, please refer to https://docs.sonarcloud.io/enriching/test-coverage/overview/
-            -Dsonar.verbose= true
-          projectBaseDir: .
+            -Dsonar.verbose= trues
