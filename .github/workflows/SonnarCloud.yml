@@ -13,12 +13,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
         
-
-      # List files in the coverage report directory for debugging
-      - name: List files in the coverage report directory (debugging)
-        run: ls -R ./TestResults/CoverageReport # Check if Cobertura.xml exists
         
       - name: Download code coverage report
         uses: actions/download-artifact@v4
@@ -32,11 +27,15 @@ jobs:
           dotnet-version: '8.0.X'
 
       - name: Run SonarCloud analysis
-        uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
-        with:
-          args: |
-            -Dsonar.projectKey=agiles-2024
-            -Dsonar.organization=agiles-2024
-            -Dsonar.cs.opencover.reportsPaths=./TestResults/CoverageReport/Cobertura.xml
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet-sonarscanner begin /k:"agiles-2024" /o:"agiles-2024" \
+            /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.cs.opencover.reportsPaths="TestResults/CoverageReport/"
+
+          dotnet build --no-restore
+
+          dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"

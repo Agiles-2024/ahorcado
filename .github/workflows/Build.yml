@@ -45,17 +45,16 @@ jobs:
           name: code-coverage-report
           path: TestResults/CoverageReport/Cobertura.xml
 
-      
       - name: Run SonarCloud analysis
+        uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          dotnet-sonarscanner begin /k:"agiles-2024" /o:"agiles-2024" \
-            /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
-            /d:sonar.cs.opencover.reportsPaths="TestResults/CoverageReport/"
-
-          dotnet build --no-restore
-
-          dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
+        with:
+          args:
+            # Unique keys of your project and organization. You can find them in SonarCloud > Information (bottom-left menu)
+            # mandatory
+            -Dsonar.projectKey=agiles-2024
+            -Dsonar.organization=agiles-2024
+            -Dsonar.tests= TestResults/**/coverage.cobertura.xml # optional. For more info about Code Coverage, please refer to https://docs.sonarcloud.io/enriching/test-coverage/overview/
+            -Dsonar.verbose= true
+          projectBaseDir: .
