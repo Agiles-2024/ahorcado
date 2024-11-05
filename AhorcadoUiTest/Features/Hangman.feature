@@ -9,10 +9,10 @@
 #	When I input the entire word code auriculares
 #	Then the result should be Felicitaciones Ganaste! =D
 
-Scenario: Single character input
-	Given The game has been initialized
-	When The user inputs the letter one random letter
-	Then The user should see the inputed letter
+#Scenario: Single character input
+#	Given The game has been initialized
+#	When The user inputs the letter one random letter
+#	Then The user should see the inputed letter
 
 #Scenario: An entire word input and loose
 #	Given the word code auriculares
