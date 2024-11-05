@@ -44,3 +44,18 @@ jobs:
         with:
           name: code-coverage-report
           path: TestResults/CoverageReport/Cobertura.xml
+
+      
+      - name: Run SonarCloud analysis
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          dotnet-sonarscanner begin /k:"agiles-2024" /o:"agiles-2024" \
+            /d:sonar.host.url="https://sonarcloud.io" \
+            /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.cs.opencover.reportsPaths="TestResults/CoverageReport/"
+
+          dotnet build --no-restore
+
+          dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
