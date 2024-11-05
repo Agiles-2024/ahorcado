@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: ["Build, Test, and Coverage"]
     types:
-      - success
+      - completed
 
 jobs:
   sonarcloud:
