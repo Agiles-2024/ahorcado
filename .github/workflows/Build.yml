@@ -19,6 +19,9 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
+      - name: Install ReportGenerator
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+
       - name: Restore dependencies
         run: dotnet restore
 
@@ -27,20 +30,21 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          dotnet test --no-build --configuration Release \
-          --collect:"XPlat Code Coverage" \
-          --results-directory ./TestResults
-
-      - name: Generate coverage report
+          dotnet test --no-build --collect "XPlat Code Coverage;Format=opencover"
+          
+      - name: Generate SonarQube-compatible Coverage Report
         run: |
-          dotnet tool install --global dotnet-reportgenerator-globaltool
-          ~/.dotnet/tools/reportgenerator \
-            -reports:TestResults/**/coverage.cobertura.xml \
-            -targetdir:TestResults/CoverageReport \
-            -reporttypes:Cobertura
+          reportgenerator -reports:**/TestResults/**/coverage.cobertura.xml -targetdir:sonarqubecoverage -reporttypes:SonarQube
 
-      - name: Upload coverage report as an artifact
-        uses: actions/upload-artifact@v3
+      - name: Run SonarCloud analysis
+        uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          name: code-coverage-report
-          path: TestResults/CoverageReport/Cobertura.xml
+          args: |
+            -Dsonar.projectKey=agiles-2024
+            -Dsonar.organization=agiles-2024
+            -Dsonar.cs.vscoveragexml.reportsPaths=sonarqubecoverage/SonarQube.xml
+            -Dsonar.cs.dotcover.reportsPaths=sonarqubecoverage/SonarQube.xml
+            -Dsonar.cs.opencover.reportsPaths=sonarqubecoverage/SonarQube.xml
+            -Dsonar.verbose=true
