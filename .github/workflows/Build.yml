@@ -27,8 +27,7 @@ jobs:
 
       - name: Build solution
         run: |
-          dotnet build /home/runner/work/ahorcado/ahorcado/AhocadoTest/AhocadoTest.csproj
-          dotnet build /home/runner/work/ahorcado/ahorcado/AhorcadoUiTest/AhorcadoUiTest.csproj
+          dotnet build --configuration Release
 
       - name: Run tests with OpenCover
         run: |
