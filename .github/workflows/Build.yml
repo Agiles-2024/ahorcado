@@ -22,6 +22,22 @@ jobs:
       - name: Install ReportGenerator
         run: dotnet tool install -g dotnet-reportgenerator-globaltool
         
+      - name: Install dotCover CLI tools
+        run: |
+          curl -L https://download.jetbrains.com/resharper/dotCover-CommandLineTools.zip -o dotcover.zip
+          unzip dotcover.zip -d dotcover
+          chmod +x dotcover/dotcover.sh
+
+      - name: Install coverlet.collector package in AhocadoTest
+        run: |
+          cd /home/runner/work/ahorcado/ahorcado/AhocadoTest
+          dotnet add package coverlet.collector
+
+      - name: Install coverlet.collector package in AhorcadoUiTest
+        run: |
+          cd /home/runner/work/ahorcado/ahorcado/AhorcadoUiTest
+          dotnet add package coverlet.collector
+
       - name: Restore dependencies
         run: dotnet restore
 
@@ -33,12 +49,11 @@ jobs:
       - name: Run tests with OpenCover
         run: |
           dotnet test --no-build --collect "XPlat Code Coverage;Format=opencover"
-          dotnet dotcover test
+          dotcover/dotcover.sh cover --target="dotnet" --targetArguments="test" --output="coverage.dotCover.html"
 
       - name: Generate SonarQube-compatible Coverage Report
         run: |
           reportgenerator -reports:**/TestResults/**/coverage.opencover.xml -targetdir:sonarqubecoverage -reporttypes:SonarQube
-          reportgenerator -reports:dotCover.Output.xml -targetdir:coverage -reporttypes:Cobertura
           
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
@@ -48,6 +63,6 @@ jobs:
           args: |
             -Dsonar.projectKey=agiles-2024
             -Dsonar.organization=agiles-2024
-            -Dsonar.cs.dotcover.reportsPaths=coverage/Cobertura.xml
+            -Dsonar.cs.dotcover.reportsPaths=coverage.dotCover.html
             -Dsonar.cs.opencover.reportsPaths=sonarqubecoverage/SonarQube.xml
             -Dsonar.verbose=true
