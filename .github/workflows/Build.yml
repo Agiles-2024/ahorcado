@@ -32,8 +32,9 @@ jobs:
 
       - name: Run tests with OpenCover
         run: |
-          dotnet test --no-build --collect "CodeCoverage;Format=opencover"
-
+          # dotnet test --no-build --collect "CodeCoverage;Format=opencover"
+          dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"
+          
       - name: Generate SonarQube-compatible Coverage Report
         run: |
           reportgenerator -reports:**/TestResults/**/coverage.opencover.xml -targetdir:sonarqubecoverage -reporttypes:SonarQube
