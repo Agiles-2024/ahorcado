@@ -27,7 +27,7 @@ jobs:
 
       - name: Build solution
         run: |
-          dotnet build --configuration Release
+          dotnet build --configuration Release -p:DeterministicSourcePaths=true
 
       - name: Run tests with OpenCover
         run: |
