@@ -30,11 +30,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          dotnet test --no-build --configuration Release \
-          --collect:"XPlat Code Coverage" \
-          --results-directory ./TestResults \
-          /p:CoverletOutputFormat=opencover \
-          /p:CoverletOutput=./TestResults/coverage.cobertura.xml \
+          dotnet test --no-build --collect "XPlat Code Coverage;Format=opencover"
           
       - name: Generate SonarQube-compatible Coverage Report
         run: |
