@@ -25,21 +25,18 @@ jobs:
       - name: Build solution
         run: dotnet build --no-restore --configuration Release
 
-      - name: Run tests and collect coverage
-        run: dotnet test --collect:"Code Coverage"
-       
-      - name: Locate .coverage file
-        id: locate_coverage
+      - name: Run tests with coverage
         run: |
-          # Find the .coverage file path
-          coverage_file=$(find ./TestResults -name "*.coverage" | head -n 1)
-          echo "coverage_file=${coverage_file}" >> $GITHUB_ENV
-
+          dotnet test --no-build --configuration Release \
+          --collect:"XPlat Code Coverage" \
+          --results-directory ./TestResults \
+          /p:CoverletOutputFormat=opencover \
+          /p:CoverletOutput=./TestResults/coverage.opencover.xml \
+          
       - name: Convert coverage to XML
-        if: env.coverage_file != ''
         run: |
           dotnet tool install -g dotnet-reportgenerator-globaltool
-          reportgenerator -reports:"${{ env.coverage_file }}" -targetdir:"coverage-report" -reporttypes:Xml
+          reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:Xml
 
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
