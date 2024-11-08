@@ -50,7 +50,15 @@ jobs:
         run: |
           dotnet test --collect "Code Coverage"
 
- 
+       - name: Find the coverage file
+        id: coverage-file
+        run: |
+          coverage_file=$(find /home/runner/work/ahorcado/ahorcado/AhocadoTest/TestResults -name "*.coverage" | head -n 1)
+          echo "coverage_file=$coverage_file" >> $GITHUB_ENV
+
+      - name: Use the coverage file
+        run: |
+          echo "The coverage file path is ${{ env.coverage_file }}"
           
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
@@ -60,7 +68,7 @@ jobs:
           args: |
             -Dsonar.projectKey=agiles-2024
             -Dsonar.organization=agiles-2024
-            -Dsonar.cs.vscoveragexml.reportsPaths=TestResults/**/**.coverage
+            -Dsonar.cs.vscoveragexml.reportsPaths=${{ env.coverage_file }}
             # -Dsonar.cs.opencover.reportsPaths=sonarqubecoverage/SonarQube.xml
             # -Dsonar.cs.opencover.reportsPaths=**/AhocadoTest/TestResults/coverage.opencover.xml
             -Dsonar.verbose=true
