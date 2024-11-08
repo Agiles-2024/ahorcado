@@ -25,19 +25,21 @@ jobs:
       - name: Build solution
         run: dotnet build --no-restore --configuration Release
 
-      - name: Run tests with coverage
+      - name: Run tests with OpenCover coverage
         run: |
           dotnet test --no-build --configuration Release \
-          --collect:"XPlat Code Coverage" \
+          /p:CollectCoverage=true \
+          /p:CoverletOutputFormat=opencover \
+          /p:CoverletOutput=./TestResults/coverage.opencover.xml \
           --results-directory ./TestResults
-
-      - name: Generate coverage report
+      
+      - name: Generate OpenCover report
         run: |
           dotnet tool install --global dotnet-reportgenerator-globaltool
           ~/.dotnet/tools/reportgenerator \
-            -reports:TestResults/**/coverage.cobertura.xml \
+            -reports:TestResults/coverage.opencover.xml \
             -targetdir:TestResults/CoverageReport \
-            -reporttypes:Cobertura
+            -reporttypes:OpenCover
 
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
@@ -47,5 +49,5 @@ jobs:
           args: |
             -Dsonar.projectKey=agiles-2024
             -Dsonar.organization=agiles-2024
-            -Dsonar.coverage.jacoco.xmlReportPaths=TestResults/**/coverage.cobertura.xml
+            -Dsonar.cs.opencover.reportsPaths=TestResults/CoverageReport/coverage.opencover.xml
             -Dsonar.verbose=true
