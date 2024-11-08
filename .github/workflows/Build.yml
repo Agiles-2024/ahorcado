@@ -22,22 +22,6 @@ jobs:
       - name: Install ReportGenerator
         run: dotnet tool install -g dotnet-reportgenerator-globaltool
         
-      - name: Install dotCover CLI tools
-        run: |
-          curl -L https://download.jetbrains.com/resharper/dotCover-CommandLineTools.zip -o dotcover.zip
-          unzip dotcover.zip -d dotcover
-          chmod +x dotcover/dotcover.sh
-
-      - name: Install coverlet.collector package in AhocadoTest
-        run: |
-          cd /home/runner/work/ahorcado/ahorcado/AhocadoTest
-          dotnet add package coverlet.collector
-
-      - name: Install coverlet.collector package in AhorcadoUiTest
-        run: |
-          cd /home/runner/work/ahorcado/ahorcado/AhorcadoUiTest
-          dotnet add package coverlet.collector
-
       - name: Restore dependencies
         run: dotnet restore
 
@@ -48,8 +32,7 @@ jobs:
 
       - name: Run tests with OpenCover
         run: |
-          dotnet test --no-build --collect "XPlat Code Coverage;Format=opencover"
-          dotcover/dotcover.sh cover --target="dotnet" --targetArguments="test" --output="coverage.dotCover.html"
+          dotnet test --no-build --collect "CodeCoverage;Format=opencover"
 
       - name: Generate SonarQube-compatible Coverage Report
         run: |
@@ -60,9 +43,12 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          args: |
-            -Dsonar.projectKey=agiles-2024
-            -Dsonar.organization=agiles-2024
-            -Dsonar.cs.dotcover.reportsPaths=coverage.dotCover.html
-            -Dsonar.cs.opencover.reportsPaths=sonarqubecoverage/SonarQube.xml
-            -Dsonar.verbose=true
+          # args: |
+          #   -Dsonar.projectKey=agiles-2024
+          #   -Dsonar.organization=agiles-2024\
+          #   -Dsonar.cs.opencover.reportsPaths=sonarqubecoverage/SonarQube.xml
+          #   -Dsonar.verbose=
+          organization: agiles-2024
+          token: ${{ secrets.SONAR_TOKEN }}
+          projectKey: agiles-2024
+          coverageReportPaths: "sonarqubecoverage/coverage-report.xml"
