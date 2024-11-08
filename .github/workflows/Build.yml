@@ -21,7 +21,7 @@ jobs:
 
       - name: Install ReportGenerator
         run: dotnet tool install -g dotnet-reportgenerator-globaltool
-        
+
       - name: Restore dependencies
         run: dotnet restore
 
@@ -48,7 +48,7 @@ jobs:
           args: |
             -Dsonar.projectKey=agiles-2024
             -Dsonar.organization=agiles-2024
-            -Dsonar.cs.vscoveragexml.reportsPaths=sonarqubecoverage
-            -Dsonar.cs.dotcover.reportsPaths=sonarqubecoverage
-            -Dsonar.cs.opencover.reportsPaths=sonarqubecoverage
+            -Dsonar.cs.vscoveragexml.reportsPaths=sonarqubecoverage/SonarQube.xml
+            -Dsonar.cs.dotcover.reportsPaths=sonarqubecoverage/SonarQube.xml
+            -Dsonar.cs.opencover.reportsPaths=sonarqubecoverage/SonarQube.xml
             -Dsonar.verbose=true
