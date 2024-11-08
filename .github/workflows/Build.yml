@@ -22,9 +22,6 @@ jobs:
       - name: Install ReportGenerator
         run: dotnet tool install -g dotnet-reportgenerator-globaltool
         
-      - name: Install coverlet.collector package
-        run: dotnet add package coverlet.collector
-
       - name: Restore dependencies
         run: dotnet restore
 
