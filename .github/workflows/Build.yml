@@ -31,13 +31,8 @@ jobs:
           --collect:"XPlat Code Coverage" \
           --results-directory ./TestResults \
           /p:CoverletOutputFormat=opencover \
-          /p:CoverletOutput=./TestResults/coverage.opencover.xml \
-    
-      - name: Run tests and generate coverage report with dotCover
-        uses: dodopizza/dotcover-action@v1.2
-        with:
-          dotCoverCommand: 'cover --output=coverage.dcvr --reportType=HTML --report=coverage.html -- dotnet test'
-          
+          /p:CoverletOutput=./TestResults/coverage.cobertura.xml \
+     
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
         env:
@@ -46,6 +41,5 @@ jobs:
           args: |
             -Dsonar.projectKey=agiles-2024
             -Dsonar.organization=agiles-2024
-            -Dsonar.cs.opencover.reportsPaths=TestResults/**/coverage.cobertura.xml
-            -Dsonar.cs.dotCover.reportsPaths=coverage.html
+            -Dsonar.cs.vscoveragexml.reportsPaths=TestResults/**/coverage.cobertura.xml
             -Dsonar.verbose=true
