@@ -19,20 +19,27 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
+      - name: Install ReportGenerator
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+        
       - name: Restore dependencies
         run: dotnet restore
 
       - name: Build solution
         run: dotnet build --no-restore --configuration Release
-        
-      - name: Install dotnet-coverage tool
+             
+      - name: Run tests with coverage
         run: |
-          dotnet tool install --global dotnet-coverage
-      
-      - name: Run tests for net8.0 with OpenCover
-        run: dotnet test --no-build --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover --framework net8.0
-        continue-on-error: true
+          dotnet test --no-build --configuration Release \
+          --collect:"XPlat Code Coverage" \
+          --results-directory ./TestResults \
+          /p:CoverletOutputFormat=opencover \
+          /p:CoverletOutput=./TestResults/coverage.cobertura.xml \ 
 
+      - name: Generate SonarQube-compatible Coverage Report
+        run: |
+          reportgenerator -reports:**/TestResults/**/coverage.cobertura.xml -targetdir:sonarqubecoverage -reporttypes:SonarQube
+          
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
         env:
@@ -41,5 +48,5 @@ jobs:
           args: |
             -Dsonar.projectKey=agiles-2024
             -Dsonar.organization=agiles-2024
-            -Dsonar.cs.vscoveragexml.reportsPaths=coverage.xml
+            -Dsonar.cs.vscoveragexml.reportsPaths=sonarqubecoverage
             -Dsonar.verbose=true
