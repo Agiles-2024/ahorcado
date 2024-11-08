@@ -27,11 +27,19 @@ jobs:
 
       - name: Run tests and collect coverage
         run: dotnet test --collect:"Code Coverage"
-        
+       
+      - name: Locate .coverage file
+        id: locate_coverage
+        run: |
+          # Find the .coverage file path
+          coverage_file=$(find ./TestResults -name "*.coverage" | head -n 1)
+          echo "coverage_file=${coverage_file}" >> $GITHUB_ENV
+
       - name: Convert coverage to XML
+        if: env.coverage_file != ''
         run: |
           dotnet tool install -g dotnet-reportgenerator-globaltool
-          reportgenerator -reports:"TestResults/**/*.coverage" -targetdir:"coverage-report" -reporttypes:Xml
+          reportgenerator -reports:"${{ env.coverage_file }}" -targetdir:"coverage-report" -reporttypes:Xml
 
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
