@@ -32,22 +32,23 @@ jobs:
 
       - name: Run tests with OpenCover
         run: |
-          dotnet test --no-build --collect "XPlat Code Coverage;Format=opencover"
-          dotnet test --no-build --collect "XPlat Code Coverage;Format=dotCover"
+          dotnet test --no-build --collect "CodeCoverage;Format=opencover"
 
       - name: Generate SonarQube-compatible Coverage Report
         run: |
-          reportgenerator -reports:**/TestResults/**/coverage.opencover.xml -targetdir:sonarqubecoverage -reporttypes:SonarQube          
-          reportgenerator -reports:**/TestResults/**/coverage.dotCover.xml -targetdir:dotCover -reporttypes:dotCover
-
+          reportgenerator -reports:**/TestResults/**/coverage.opencover.xml -targetdir:sonarqubecoverage -reporttypes:SonarQube
+          
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          args: |
-            -Dsonar.projectKey=agiles-2024
-            -Dsonar.organization=agiles-2024
-            -Dsonar.cs.dotcover.reportsPaths=dotCover/dotCover.html
-            -Dsonar.cs.opencover.reportsPaths=sonarqubecoverage/SonarQube.xml
-            -Dsonar.verbose=true
+          # args: |
+          #   -Dsonar.projectKey=agiles-2024
+          #   -Dsonar.organization=agiles-2024\
+          #   -Dsonar.cs.opencover.reportsPaths=sonarqubecoverage/SonarQube.xml
+          #   -Dsonar.verbose=
+          organization: agiles-2024
+          token: ${{ secrets.SONAR_TOKEN }}
+          projectKey: agiles-2024
+          coverageReportPaths: "sonarqubecoverage/coverage-report.xml"
