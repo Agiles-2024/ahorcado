@@ -27,11 +27,11 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          dotnet test --no-build --configuration Release \
-          --collect:"XPlat Code Coverage" \
-          --results-directory ./TestResults\
-          /p:CoverletOutputFormat=opencover \
-          /p:CoverletOutput=./TestResults/coverage.opencover.xml \
+        dotnet test --no-build --configuration Release \
+        --collect:"XPlat Code Coverage" \
+        --results-directory ./TestResults \
+        /p:CoverletOutputFormat=opencover \
+        /p:CoverletOutput=./TestResults/coverage.opencover.xml
           
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
