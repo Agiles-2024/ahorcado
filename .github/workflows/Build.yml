@@ -24,20 +24,15 @@ jobs:
 
       - name: Build solution
         run: dotnet build --no-restore --configuration Release
+        
+      - name: Install dotnet-coverage tool
+        run: |
+          dotnet tool install --global dotnet-coverage
 
       - name: Run tests with coverage
         run: |
-          dotnet test --no-build --configuration Release \
-          --collect:"XPlat Code Coverage" \
-          --results-directory ./TestResults \
-          /p:CoverletOutputFormat=opencover \
-          /p:CoverletOutput=./TestResults/coverage.opencover.xml \
+          dotnet-coverage collect --format xml --output coverage.xml dotnet test
           
-      - name: Convert coverage to XML
-        run: |
-          dotnet tool install -g dotnet-reportgenerator-globaltool
-          reportgenerator -reports:"TestResults/**/coverage.cobertura.xml" -targetdir:"coverage-report" -reporttypes:Coverlet
-
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
         env:
@@ -46,7 +41,5 @@ jobs:
           args: |
             -Dsonar.projectKey=agiles-2024
             -Dsonar.organization=agiles-2024
-            -Dsonar.cs.vscoveragexml.reportsPaths=coverage-report/Coverlet.xml
-            -Dsonar.cs.dotcover.reportsPaths=coverage-report/Coverlet.xml
-            -Dsonar.cs.opencover.reportsPaths=coverage-report/Coverlet.xml
+            -Dsonar.cs.vscoveragexml.reportsPaths=coverage.xml
             -Dsonar.verbose=true
