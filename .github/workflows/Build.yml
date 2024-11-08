@@ -19,27 +19,38 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Install ReportGenerator
-        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+      # - name: Install ReportGenerator
+      #   run: dotnet tool install -g dotnet-reportgenerator-globaltool
         
       - name: Restore dependencies
         run: dotnet restore
 
+      # - name: Build solution
+      #   run: |
+      #     dotnet build --configuration Release -p:DeterministicSourcePaths=true
+
+      # - name: Run tests with OpenCover
+      #   run: |
+      #     dotnet test --no-build --configuration Release \
+      #     --results-directory ./TestResults \
+      #     /p:CollectCoverage=true \
+      #     /p:CoverletOutputFormat=opencover \
+      #     /p:CoverletOutput=./TestResults/coverage.opencover.xml \
+          
+      # - name: Generate SonarQube-compatible Coverage Report
+      #   run: |
+      #     reportgenerator -reports:**/TestResults/**/coverage.opencover.xml -targetdir:sonarqubecoverage -reporttypes:SonarQube
+
+
       - name: Build solution
         run: |
-          dotnet build --configuration Release -p:DeterministicSourcePaths=true
+          dotnet build --no-incremental
 
       - name: Run tests with OpenCover
         run: |
-          dotnet test --no-build --configuration Release \
-          --results-directory ./TestResults \
-          /p:CollectCoverage=true \
-          /p:CoverletOutputFormat=opencover \
-          /p:CoverletOutput=./TestResults/coverage.opencover.xml \
-          
-      - name: Generate SonarQube-compatible Coverage Report
-        run: |
-          reportgenerator -reports:**/TestResults/**/coverage.opencover.xml -targetdir:sonarqubecoverage -reporttypes:SonarQube
+          dotnet test --collect "Code Coverage"
+
+ 
           
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
@@ -49,6 +60,7 @@ jobs:
           args: |
             -Dsonar.projectKey=agiles-2024
             -Dsonar.organization=agiles-2024
+            # -Dsonar.cs.vscoveragexml.reportsPaths=
             # -Dsonar.cs.opencover.reportsPaths=sonarqubecoverage/SonarQube.xml
-            -Dsonar.cs.opencover.reportsPaths=**/AhocadoTest/TestResults/coverage.opencover.xml
+            # -Dsonar.cs.opencover.reportsPaths=**/AhocadoTest/TestResults/coverage.opencover.xml
             -Dsonar.verbose=true
