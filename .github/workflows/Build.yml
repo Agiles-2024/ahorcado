@@ -32,22 +32,21 @@ jobs:
           --results-directory ./TestResults \
           /p:CoverletOutputFormat=opencover \
           /p:CoverletOutput=./TestResults/coverage.opencover.xml \
-
-
+    
+      - name: Download and extract dotCover
+        run: |
+          curl -L -o dotCover.zip https://download.jetbrains.com/resharper/dotCover.2023.1.3/JetBrains.dotCover.CommandLineTools.2023.1.3.zip
+          tar -xf dotCover.zip -C dotCover
+    
       - name: Run tests with dotCover
         run: |
-          # Install dotCover using JetBrains Toolbox CLI if not already in the repo
-          curl -L -o dotCover.exe https://download.jetbrains.com/resharper/dotCover.2023.1.3/JetBrains.dotCover.CommandLineTools.2023.1.3.zip
-          Expand-Archive -Path dotCover.exe -DestinationPath .
-          
           # Define output paths
           $CoverageOutput = "coverage.dcvr"
           $ReportOutput = "coverage.html"
           
           # Run dotCover to collect coverage and generate report
-          ./dotCover.exe cover --output=$CoverageOutput --reportType=HTML --report=$ReportOutput --scope=ProjectName -- dotnet test
+          ./dotCover/dotCover.exe cover --output=$CoverageOutput --reportType=HTML --report=$ReportOutput --scope=ProjectName -- dotnet test
 
-      
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
         env:
