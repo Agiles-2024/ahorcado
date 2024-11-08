@@ -47,5 +47,5 @@ jobs:
           args: |
             -Dsonar.projectKey=agiles-2024
             -Dsonar.organization=agiles-2024
-            -Dsonar.cs.opencover.reportsPaths=TestResults/CoverageReport/Cobertura.xml
+            -sonar.coverage.jacoco.xmlReportPaths=TestResults/CoverageReport/Cobertura.xml
             -Dsonar.verbose=true
