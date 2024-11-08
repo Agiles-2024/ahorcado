@@ -27,7 +27,7 @@ jobs:
 
       - name: Build solution
         run: |
-          dotnet build --configuration Release -p:DeterministicSourcePaths=true
+          dotnet build /home/runner/work/ahorcado/ahorcado/AhocadoTest --configuration Release -p:DeterministicSourcePaths=true
 
       - name: Run tests with OpenCover
         run: |
@@ -37,9 +37,9 @@ jobs:
           /p:CoverletOutputFormat=opencover \
           /p:CoverletOutput=./TestResults/coverage.opencover.xml \
           
-      - name: Generate SonarQube-compatible Coverage Report
-        run: |
-          reportgenerator -reports:**/TestResults/**/coverage.opencover.xml -targetdir:sonarqubecoverage -reporttypes:SonarQube
+      # - name: Generate SonarQube-compatible Coverage Report
+      #   run: |
+      #     reportgenerator -reports:**/TestResults/**/coverage.opencover.xml -targetdir:sonarqubecoverage -reporttypes:SonarQube
           
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
