@@ -33,7 +33,7 @@ namespace AhorcadoLibreria
                 "viaje",
                 "tiempo",
                 "trabajo",
-                "sueño",
+                "suero",
             };
         }
 
