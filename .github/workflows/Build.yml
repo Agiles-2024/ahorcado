@@ -60,7 +60,7 @@ jobs:
           args: |
             -Dsonar.projectKey=agiles-2024
             -Dsonar.organization=agiles-2024
-            # -Dsonar.cs.vscoveragexml.reportsPaths=
+            # -Dsonar.cs.vscoveragexml.reportsPaths= TestResults/**/**.coverage
             # -Dsonar.cs.opencover.reportsPaths=sonarqubecoverage/SonarQube.xml
             # -Dsonar.cs.opencover.reportsPaths=**/AhocadoTest/TestResults/coverage.opencover.xml
             -Dsonar.verbose=true
