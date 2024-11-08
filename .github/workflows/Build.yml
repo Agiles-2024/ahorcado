@@ -30,11 +30,8 @@ jobs:
           dotnet build /home/runner/work/ahorcado/ahorcado/AhocadoTest/AhocadoTest.csproj
           dotnet build /home/runner/work/ahorcado/ahorcado/AhorcadoUiTest/AhorcadoUiTest.csproj
 
-      - name: Run tests for AhocadoTest with OpenCover
-        run: dotnet test /home/runner/work/ahorcado/ahorcado/AhocadoTest/bin/Debug/net8.0/AhocadoTest.dll --no-build --collect:"XPlat Code Coverage;Format=opencover"
-
-      - name: Run tests for AhorcadoUiTest with OpenCover
-        run: dotnet test /home/runner/work/ahorcado/ahorcado/AhorcadoUiTest/bin/Debug/net8.0/AhorcadoUiTest.dll --no-build --collect:"XPlat Code Coverage;Format=opencover"
+      - name: Run tests with OpenCover
+        run: dotnet test --no-build --collect "XPlat Code Coverage;Format=opencover"
 
       - name: Generate SonarQube-compatible Coverage Report
         run: |
