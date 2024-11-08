@@ -46,12 +46,9 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          # args: |
-          #   -Dsonar.projectKey=agiles-2024
-          #   -Dsonar.organization=agiles-2024\
-          #   -Dsonar.cs.opencover.reportsPaths=sonarqubecoverage/SonarQube.xml
-          #   -Dsonar.verbose=
-          organization: agiles-2024
-          token: ${{ secrets.SONAR_TOKEN }}
-          projectKey: agiles-2024
-          coverageReportPaths: "sonarqubecoverage/coverage-report.xml"
+          args: |
+            -Dsonar.projectKey=agiles-2024
+            -Dsonar.organization=agiles-2024\
+            -Dsonar.cs.opencover.reportsPaths=sonarqubecoverage/SonarQube.xml
+            # -Dsonar.cs.opencover.reportsPaths=*/TestResults/coverage.opencover.xml
+            -Dsonar.verbose=true
