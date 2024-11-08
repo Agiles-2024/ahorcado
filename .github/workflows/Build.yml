@@ -50,5 +50,5 @@ jobs:
             -Dsonar.projectKey=agiles-2024
             -Dsonar.organization=agiles-2024
             # -Dsonar.cs.opencover.reportsPaths=sonarqubecoverage/SonarQube.xml
-            -Dsonar.cs.opencover.reportsPaths=**/TestResults/**/coverage.opencover.xml
+            -Dsonar.cs.opencover.reportsPaths=**/AhocadoTest/TestResults/coverage.opencover.xml
             -Dsonar.verbose=true
