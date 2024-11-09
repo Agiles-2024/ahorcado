@@ -46,5 +46,5 @@ jobs:
           args: | 
             -Dsonar.projectKey=agiles-2024
             -Dsonar.organization=agiles-2024
-            -Dsonar.coverageReportPaths=".\sonarqubecoverage\SonarQube.xml"
+            -Dsonar.coverageReportPaths=sonarqubecoverage/SonarQube.xml
             -Dsonar.verbose=true
