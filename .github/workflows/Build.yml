@@ -57,7 +57,7 @@ jobs:
             -Dsonar.organization=agiles-2024
             -Dsonar.cs.opencover.reportsPaths=./**/coverage.opencover.xml
             -Dsonar.verbose=true
-            -Dsonar.sources=/home/runner/work/ahorcado/ahorcado/AhorcadoLibreria
-            -Dsonar.tests=/home/runner/work/ahorcado/ahorcado/AhocadoTest
+            -Dsonar.source=./AhorcadoLibreria
+            -Dsonar.tests=./AhorcadoTest
             -Dsonar.inclusions=**/*.cs
             -Dsonar.language=cs
