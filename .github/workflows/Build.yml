@@ -58,6 +58,6 @@ jobs:
             -Dsonar.cs.opencover.reportsPaths=./**/coverage.opencover.xml
             -Dsonar.verbose=true
             -Dsonar.sources=./AhorcadoLibreria
-            -Dsonar.tests=./AhorcadoTests
+            -Dsonar.tests=./AhorcadoTest
             -Dsonar.inclusions=**/*.cs
             -Dsonar.language=cs
