@@ -47,13 +47,6 @@ jobs:
           name: sonar-coverage-report
           path: sonarqubecoverage/SonarQube.xml
 
-          
-      - name: Upload Coverage Report Artifact2
-        uses: actions/upload-artifact@v3
-        with:
-          name: sonar-coverage-report2
-          path: TestResults/
-
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
         env:
@@ -62,6 +55,5 @@ jobs:
           args: |
             -Dsonar.projectKey=agiles-2024
             -Dsonar.organization=agiles-2024
-            -Dsonar.cs.opencover.reportsPaths=sonarqubecoverage/SonarQube.xml
-            # -Dsonar.cs.opencover.reportsPaths=**/AhocadoTest/TestResults/coverage.opencover.xml
+            -Dsonar.coverageReportPath=sonarqubecoverage/SonarQube.xml
             -Dsonar.verbose=true
