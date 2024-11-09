@@ -37,7 +37,13 @@ jobs:
       - name: Generate SonarQube-compatible Coverage Report
         run: |
           reportgenerator -reports:**/TestResults/*/runner*.coverage -targetdir:sonarqubecoverage -reporttypes:SonarQube
-          
+      
+      - name: Upload Coverage Report Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: sonar-coverage-report
+          path: sonarqubecoverage/SonarQube.xml
+
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@master
         env:
