@@ -18,50 +18,35 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
-
-      # - name: Install ReportGenerator
-      #   run: dotnet tool install -g dotnet-reportgenerator-globaltool
         
       - name: Restore dependencies
         run: dotnet restore
 
-      # - name: Build solution
-      #   run: |
-      #     dotnet build --configuration Release -p:DeterministicSourcePaths=true
+      - name: Install Packages
+        run: |
+          dotnet tool install --global dotnet-sonarscanner --version 5.2.0
+          dotnet tool update dotnet-reportgenerator-globaltool -g --version 4.8.7
 
-      # - name: Run tests with OpenCover
-      #   run: |
-      #     dotnet test --no-build --configuration Release \
-      #     --results-directory ./TestResults \
-      #     /p:CollectCoverage=true \
-      #     /p:CoverletOutputFormat=opencover \
-      #     /p:CoverletOutput=./TestResults/coverage.opencover.xml \
+      - name: Build solution
+        run: |
+          dotnet build --configuration Release -p:DeterministicSourcePaths=true
+
+      - name: Run tests with OpenCover
+        run: |
+          dotnet test --no-build
+          /p:CollectCoverage=true \
           
-      # - name: Generate SonarQube-compatible Coverage Report
-      #   run: |
-      #     reportgenerator -reports:**/TestResults/**/coverage.opencover.xml -targetdir:sonarqubecoverage -reporttypes:SonarQube
+      - name: Generate SonarQube-compatible Coverage Report
+        run: |
+          reportgenerator -reports:**/TestResults/**/coverage.opencover.xml -targetdir:sonarqubecoverage -reporttypes:SonarQube
           
-      # - name: Run SonarCloud analysis
-      #   uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
-      #   env:
-      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      #   with:
-      #     args: |
-      #       -Dsonar.projectKey=agiles-2024
-      #       -Dsonar.organization=agiles-2024
-      #       # -Dsonar.cs.opencover.reportsPaths=sonarqubecoverage/SonarQube.xml
-      #       -Dsonar.cs.opencover.reportsPaths=**/AhocadoTest/TestResults/coverage.opencover.xml
-      #       -Dsonar.verbose=true
-          
-      - name: Other Solution
+      - name: Run SonarCloud analysis
+        uses: SonarSource/sonarcloud-github-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-            .\.sonar\scanner\dotnet-sonarscanner begin /k:"agiles-2024" /o:"agiles-2024" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-
-            echo building project
-            dotnet build --configuration Release
-
-            echo trying to run tests
-            dotnet test 
-            .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+        with:
+          args: | 
+            -Dsonar.projectKey=agiles-2024
+            -Dsonar.organization=agiles-2024
+            -Dsonar.coverageReportPaths=".\sonarqubecoverage\SonarQube.xml"
+            -Dsonar.verbose=true
