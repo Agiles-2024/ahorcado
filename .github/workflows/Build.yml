@@ -12,45 +12,56 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
+
+      - name: Install ReportGenerator
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool
         
       - name: Restore dependencies
         run: dotnet restore
-
-      - name: Install Packages
-        run: |
-          dotnet tool update dotnet-reportgenerator-globaltool -g --version 4.8.7
 
       - name: Build solution
         run: |
           dotnet build --configuration Release -p:DeterministicSourcePaths=true
 
-      - name: Run tests and CollectCoverage
+      - name: Run tests with OpenCover
         run: |
-          dotnet test --collect "Code Coverage"
+          dotnet test --no-build --configuration Release \
+          --results-directory ./TestResults \
+          /p:CollectCoverage=true \
+          /p:CoverletOutputFormat=opencover \
+          /p:CoverletOutput=./TestResults/coverage.opencover.xml \
           
       - name: Generate SonarQube-compatible Coverage Report
         run: |
-          reportgenerator -reports:**/TestResults/*/runner*.coverage -targetdir:sonarqubecoverage -reporttypes:SonarQube
-      
+          reportgenerator -reports:**/TestResults/**/coverage.opencover.xml -targetdir:sonarqubecoverage -reporttypes:SonarQube
+          
       - name: Upload Coverage Report Artifact
         uses: actions/upload-artifact@v3
         with:
           name: sonar-coverage-report
           path: sonarqubecoverage/SonarQube.xml
 
+          
+      - name: Upload Coverage Report Artifact2
+        uses: actions/upload-artifact@v3
+        with:
+          name: sonar-coverage-report2
+          path: TestResults/
+
       - name: Run SonarCloud analysis
-        uses: SonarSource/sonarcloud-github-action@master
+        uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
-          args: | 
+          args: |
             -Dsonar.projectKey=agiles-2024
             -Dsonar.organization=agiles-2024
-            -Dsonar.coverageReportPaths=sonarqubecoverage/SonarQube.xml
+            # -Dsonar.cs.opencover.reportsPaths=sonarqubecoverage/SonarQube.xml
+            -Dsonar.cs.opencover.reportsPaths=**/AhocadoTest/TestResults/coverage.opencover.xml
             -Dsonar.verbose=true
