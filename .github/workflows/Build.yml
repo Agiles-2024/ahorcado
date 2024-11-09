@@ -32,7 +32,7 @@ jobs:
 
       - name: Run tests and CollectCoverage
         run: |
-          dotnet test --no-build --collect:"XPlat Code Coverage"
+          dotnet test --collect "Code Coverage"
           
       - name: Generate SonarQube-compatible Coverage Report
         run: |
