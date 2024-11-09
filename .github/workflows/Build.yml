@@ -36,7 +36,7 @@ jobs:
           
       - name: Generate SonarQube-compatible Coverage Report
         run: |
-          reportgenerator -reports:**/TestResults/**/coverage.opencover.xml -targetdir:sonarqubecoverage -reporttypes:SonarQube
+          reportgenerator -reports:**/TestResults/*/runner*.coverage -targetdir:sonarqubecoverage -reporttypes:SonarQube
           
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@master
