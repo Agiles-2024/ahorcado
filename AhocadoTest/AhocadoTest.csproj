@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -7,8 +7,17 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+    <PreserveCompilationReferences>true</PreserveCompilationReferences>
+    <ExcludeByFile>**/dotnet-dotcover.exe</ExcludeByFile>
   </PropertyGroup>
-
+  
+  <Target Name="CopyReferencedAssemblies" AfterTargets="Build">
+    <ItemGroup>
+      <ReferencedAssemblies Include="$(OutputPath)refs/*.dll"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(ReferencedAssemblies)" DestinationFolder="$(OutputPath)" ContinueOnError="false" />
+  </Target>
+  
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.2">
       <PrivateAssets>all</PrivateAssets>
@@ -18,12 +27,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="dotnet-framework-sonarscanner" Version="7.1.1" />
     <PackageReference Include="FluentAssertions" Version="6.12.1" />
-    <PackageReference Include="JetBrains.dotCover.CommandLineTools" Version="2019.1.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.CodeCoverage" Version="17.11.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
     <PackageReference Include="Moq" Version="4.20.72" />

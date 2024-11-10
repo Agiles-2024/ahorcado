@@ -25,27 +25,25 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build solution
-        run: |
-          dotnet build --configuration Release -p:DeterministicSourcePaths=true
-
       - name: Run tests with OpenCover
         run: |
-          dotnet test --no-build --configuration Release \
+          dotnet test --configuration Release \
           --results-directory ./TestResults \
           /p:CollectCoverage=true \
           /p:CoverletOutputFormat=opencover \
+          /p:ContinuousIntegrationBuild=true \
           /p:CoverletOutput=./TestResults/coverage.opencover.xml \
-          
-      - name: Generate SonarQube-compatible Coverage Report
-        run: |
-          reportgenerator -reports:**/TestResults/**/coverage.opencover.xml -targetdir:sonarqubecoverage -reporttypes:SonarQube
           
       - name: Upload Coverage Report Artifact
         uses: actions/upload-artifact@v3
         with:
           name: sonar-coverage-report
-          path: sonarqubecoverage/SonarQube.xml
+          path: AhocadoTest/TestResults/coverage.opencover.xml
+
+      - name: Fix coverage report paths
+        run: |
+          sed -i 's|/home/runner/work/ahorcado/ahorcado/||g' AhocadoTest/TestResults/coverage.opencover.xml
+          sed -i 's|/home/runner/work/ahorcado/ahorcado/||g' AhorcadoUiTest/TestResults/coverage.opencover.xml
 
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
@@ -55,5 +53,8 @@ jobs:
           args: |
             -Dsonar.projectKey=agiles-2024
             -Dsonar.organization=agiles-2024
-            -Dsonar.coverageReportPath=sonarqubecoverage/SonarQube.xml
+            -Dsonar.cs.opencover.reportsPaths=AhocadoTest/TestResults/coverage.opencover.xml,AhorcadoUiTest/TestResults/coverage.opencover.xml
             -Dsonar.verbose=true
+            -Dsonar.sources=.
+            -Dsonar.inclusions=**/*.cs
+            -Dsonar.language=cs
