@@ -41,7 +41,9 @@ jobs:
           path: AhocadoTest/TestResults/coverage.opencover.xml
 
       - name: Fix coverage report paths
-        run: sed -i 's|/home/runner/work/ahorcado/ahorcado/||g' AhocadoTest/TestResults/coverage.opencover.xml
+        run: |
+          sed -i 's|/home/runner/work/ahorcado/ahorcado/||g' AhocadoTest/TestResults/coverage.opencover.xml
+          sed -i 's|/home/runner/work/ahorcado/ahorcado/||g' AhorcadoUiTest/TestResults/coverage.opencover.xml
 
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
@@ -51,7 +53,7 @@ jobs:
           args: |
             -Dsonar.projectKey=agiles-2024
             -Dsonar.organization=agiles-2024
-            -Dsonar.cs.opencover.reportsPaths=AhocadoTest/TestResults/coverage.opencover.xml
+            -Dsonar.cs.opencover.reportsPaths=AhocadoTest/TestResults/coverage.opencover.xml,AhorcadoUiTest/TestResults/coverage.opencover.xml
             -Dsonar.verbose=true
             -Dsonar.sources=.
             -Dsonar.inclusions=**/*.cs
