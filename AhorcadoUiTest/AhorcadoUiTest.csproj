@@ -4,7 +4,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <PreserveCompilationReferences>true</PreserveCompilationReferences>
   </PropertyGroup>
+  
+  <Target Name="CopyReferencedAssemblies" AfterTargets="Build">
+    <ItemGroup>
+      <ReferencedAssemblies Include="$(OutputPath)refs/*.dll"/>
+    </ItemGroup>
+    <Copy SourceFiles="@(ReferencedAssemblies)" DestinationFolder="$(OutputPath)" ContinueOnError="false" />
+  </Target>
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.2">
