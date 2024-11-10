@@ -1,93 +1,109 @@
 ﻿@page "/"
-@page "/ahorcado"
+@page "/{PalabraMock}"
 @using System.Text.RegularExpressions
 @using AhorcadoLibreria
 @using AhorcadoLibreria.Constants
 @inject NavigationManager Navigation
 
 @code {
-	private Ahorcado juego;
-	private string palabra = "";
-	private string mensaje = "";
-	private char letraIngresada;
-	private string intentoPalabra = "";
+    [Parameter]
+    public string? PalabraMock { get; set; }
+    private Ahorcado juego;
+    private string palabra = "";
+    private string mensaje = "";
+    private char letraIngresada;
+    private string intentoPalabra = "";
 
-	protected override void OnInitialized()
-	{
-		var palabra = new GeneradorPalabras().GenerarPalabra();
-		juego = new Ahorcado(palabra);
-	}
+    protected override void OnInitialized()
+    {
+        var palabra = PalabraMock != null ? PalabraMock : new GeneradorPalabras().GenerarPalabra();
+        juego = new Ahorcado(palabra);
+    }
 
-	private void Reiniciar()
-	{
-		var palabra = new GeneradorPalabras().GenerarPalabra();
-		juego = new Ahorcado(palabra);
-		mensaje = string.Empty;
-	}
-	private void IngresarLetra()
-	{
-		if (juego.IngresarLetra(letraIngresada))
-		{
-			mensaje = $"Letra '{letraIngresada}' encontrada!";
-			letraIngresada = '\0';
-		}
-		else
-			mensaje = $"Letra '{letraIngresada}' no encontrada.";
+    private void Reiniciar()
+    {
+        var palabra = new GeneradorPalabras().GenerarPalabra();
+        juego = new Ahorcado(palabra);
+        mensaje = string.Empty;
+    }
+    private void IngresarLetra()
+    {
+        if (juego.IngresarLetra(letraIngresada))
+        {
+            mensaje = $"Letra '{letraIngresada}' encontrada!";
+            letraIngresada = '\0';
+        }
+        else
+            mensaje = $"Letra '{letraIngresada}' no encontrada.";
 
-		if (juego.EstaTerminado())
-			mensaje = "¡Felicidades, has ganado!";
+        if (juego.EstaTerminado())
+            mensaje = "¡Felicidades, has ganado!";
 
-	}
+    }
 
-	private void ArriesgarPalabra()
-	{
-		var resultado = juego.ArriesgarPalabra(intentoPalabra);
-		intentoPalabra = "";
+    private void ArriesgarPalabra()
+    {
+        var resultado = juego.ArriesgarPalabra(intentoPalabra);
+        intentoPalabra = "";
 
-		switch (resultado)
-		{
-			case EnumResultados.Ganaste:
-				mensaje = "¡Ganaste!";
-				break;
-			case EnumResultados.Perdiste:
-				mensaje = "Palabra incorrecta. Sigue intentando.";
-				break;
-			default:
-				mensaje = "El intento no es válido.";
-				break;
-		}
-	}
+        switch (resultado)
+        {
+            case EnumResultados.Ganaste:
+                mensaje = "¡Ganaste!";
+                break;
+            case EnumResultados.Perdiste:
+                mensaje = "Palabra incorrecta. Perdiste.";
+                break;
+            default:
+                mensaje = "El intento no es válido.";
+                break;
+        }
+    }
 }
 
 <h3>Juego del Ahorcado</h3>
 <p>@mensaje</p>
 
 <div>
-	<h4>Palabra a adivinar:</h4>
-	<p>
-		@foreach (var letra in juego.Adivinadas)
-		{
-			if (letra.IsAdivinada)
-				@($"{letra.Letra} ")
-			else
-				@("_ ")
-		}
-	</p>
+    <h4>Palabra a adivinar:</h4>
+    <p>
+        @foreach (var letra in juego.Adivinadas)
+        {
+            if (letra.IsAdivinada)
+                @($"{letra.Letra} ")
+            else
+                @("_ ")
+        }
+    </p>
+    @switch (juego.Resultado)
+    {
+        case EnumResultados.Ganaste:
+            <img src="./dinog.png" width="200" height="200" />
+            <h4>¡Ganaste!</h4>
+            break;
+        case EnumResultados.Perdiste:
+            <img src="./dino.png" width="200" height="200" />
+            <h4>Perdiste :'(</h4>
+            break;
+        case EnumResultados.EnJuego:
+            <h4>Ingresar Letra</h4>
+            <input type="text" @bind="letraIngresada" maxlength="1" />
+            <br />
+            <br />
+            <button @onclick="IngresarLetra">Probar Letra</button>
+            <br />
+            <br />
+            <h4>Arriesgar Palabra Completa</h4>
+            <input type="text" @bind="intentoPalabra" />
+            <br />
+            <br />
+            <button @onclick="ArriesgarPalabra">Arriesgar</button>
+            <br />
+            break;
 
-	<h4>Ingresar Letra</h4>
-	<input type="text" @bind="letraIngresada" maxlength="1" />
-	<br />
-	<br />
-	<button @onclick="IngresarLetra">Probar Letra</button>
+    }
 
-	<h4>Arriesgar Palabra Completa</h4>
-	<input type="text" @bind="intentoPalabra" />
-	<br />
-	<br />
-	<button @onclick="ArriesgarPalabra">Arriesgar</button>
-
-	<br />
-	<br />
-	<button @onclick="Reiniciar">Reiniciar</button>
+    <p>Vidas restantes: @juego.Vidas</p>
+    <button @onclick="Reiniciar">Reiniciar</button>
 
 </div>

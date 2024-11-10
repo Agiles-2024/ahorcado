@@ -6,38 +6,46 @@ using AhorcadoLibreria.Constants;
 
 namespace AhorcadoLibreria
 {
-    public class Ahorcado
-    {
-        public string Palabra { get; set; } = string.Empty;
+	public class Ahorcado
+	{
+		public string Palabra { get; set; } = string.Empty;
 
-        public List<WrapperLetra> Adivinadas { get; set; }
+		public List<WrapperLetra> Adivinadas { get; set; }
 
-        public Ahorcado(string palabra)
-        {
-            Palabra = palabra;
-            Adivinadas = palabra.ToCharArray().Select(letra => new WrapperLetra(letra)).ToList();
-        }
+		public int Vidas { get; set; } = 6;
 
-        public bool IngresarLetra(char letra)
-        {
-            var valido = Regex.IsMatch(letra.ToString(), FixedRegex.NoCaracteresEspecialesNumerosOTildes);
+		public EnumResultados Resultado
+			=> Vidas == 0 ? EnumResultados.Perdiste : EstaTerminado() ? EnumResultados.Ganaste : EnumResultados.EnJuego;
 
-            if (!valido)
-                return false;
+		public Ahorcado(string palabra)
+		{
+			Palabra = palabra;
+			Adivinadas = palabra.ToCharArray().Select(letra => new WrapperLetra(letra)).ToList();
+		}
 
-            var encontro = Palabra.Contains(letra, StringComparison.OrdinalIgnoreCase);
+		public bool IngresarLetra(char letra)
+		{
+			var valido = Regex.IsMatch(letra.ToString(), FixedRegex.NoCaracteresEspecialesNumerosOTildes);
 
-            if (!encontro)
-                return false;
+			if (!valido)
+				return false;
 
-            foreach (var l in Adivinadas)
-            {
-                if (!l.IsAdivinada)
-                    l.IsAdivinada = l.Letra.ToString().Equals(letra.ToString(), StringComparison.OrdinalIgnoreCase);
-            }
+			var encontro = Palabra.Contains(letra, StringComparison.OrdinalIgnoreCase);
 
-            return true;
-        }
+			if (!encontro)
+			{
+				Vidas--;
+				return false;
+			}
+
+			foreach (var l in Adivinadas)
+			{
+				if (!l.IsAdivinada)
+					l.IsAdivinada = l.Letra.ToString().Equals(letra.ToString(), StringComparison.OrdinalIgnoreCase);
+			}
+
+			return true;
+		}
 
 
 
@@ -45,18 +53,21 @@ namespace AhorcadoLibreria
 		{
 			var valido = Regex.IsMatch(palabra, FixedRegex.NoCaracteresEspecialesNumerosOTildes);
 
-            if (!valido)
-                return EnumResultados.NoEsUnaPalabraValida;
+			if (!valido)
+				return EnumResultados.NoEsUnaPalabraValida;
 
 			if (palabra.Equals(Palabra, StringComparison.OrdinalIgnoreCase))
-				return  EnumResultados.Ganaste;
+			{
+                Adivinadas.ForEach(l => l.IsAdivinada = true) ;
+				return EnumResultados.Ganaste;
+            }
 			else
-				return  EnumResultados.Perdiste;
+			{
+				Vidas = 0;
+				return EnumResultados.Perdiste;
+			}
 		}
 
-        public bool EstaTerminado()
-        {
-            return !Adivinadas.Any(letra => !letra.IsAdivinada);
-        }
-    }
+		public bool EstaTerminado() => !Adivinadas.Any(letra => !letra.IsAdivinada);
+	}
 }

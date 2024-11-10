@@ -10,6 +10,7 @@ namespace AhorcadoLibreria.Constants
     {
         NoEsUnaPalabraValida,
         Ganaste,
-        Perdiste
+        Perdiste,
+        EnJuego
     }
 }
