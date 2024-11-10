@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <PreserveCompilationReferences>true</PreserveCompilationReferences>
     <ExcludeByFile>**/dotnet-dotcover.exe</ExcludeByFile>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   
   <Target Name="CopyReferencedAssemblies" AfterTargets="Build">
