@@ -59,5 +59,6 @@ jobs:
             -Dsonar.cs.opencover.reportsPaths=./**/coverage.opencover.xml
             -Dsonar.verbose=true
             -Dsonar.sources=.
+            -Dsonar.projectBaseDir=/home/runner/work/ahorcado/ahorcado
             -Dsonar.inclusions=**/*.cs
             -Dsonar.language=cs
