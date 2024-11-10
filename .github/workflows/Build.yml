@@ -25,10 +25,6 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      # - name: Build solution
-      #   run: |
-      #     dotnet build --configuration Release -p:DeterministicSourcePaths=true
-
       - name: Run tests with OpenCover
         run: |
           dotnet test --configuration Release \
@@ -43,6 +39,9 @@ jobs:
         with:
           name: sonar-coverage-report
           path: AhocadoTest/TestResults/coverage.opencover.xml
+
+      - name: Fix coverage report paths
+        run: sed -i 's|/home/runner/work/ahorcado/ahorcado/||g' ./TestResults/coverage.opencover.xml
 
       - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@4006f663ecaf1f8093e8e4abb9227f6041f52216
