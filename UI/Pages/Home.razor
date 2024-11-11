@@ -62,7 +62,7 @@
 }
 
 <h3>Juego del Ahorcado</h3>
-<p>@mensaje</p>
+<p id="outputMsg">@mensaje</p>
 
 <div>
     <h4>Palabra a adivinar:</h4>
@@ -87,17 +87,17 @@
             break;
         case EnumResultados.EnJuego:
             <h4>Ingresar Letra</h4>
-            <input type="text" @bind="letraIngresada" maxlength="1" />
+            <input id="charInput" type="text" @bind="letraIngresada" maxlength="1" />
             <br />
             <br />
-            <button @onclick="IngresarLetra">Probar Letra</button>
+            <button id="tryBtn" @onclick="IngresarLetra">Probar Letra</button>
             <br />
             <br />
             <h4>Arriesgar Palabra Completa</h4>
-            <input type="text" @bind="intentoPalabra" />
+            <input id="wordInput" type="text" @bind="intentoPalabra" />
             <br />
             <br />
-            <button @onclick="ArriesgarPalabra">Arriesgar</button>
+            <button id="guessBtn" @onclick="ArriesgarPalabra">Arriesgar</button>
             <br />
             break;
 
