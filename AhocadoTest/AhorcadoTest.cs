@@ -194,6 +194,80 @@ namespace AhocadoTest
             // Assert
             resultado.Should().Be(true);
         }
+
+
+        #endregion
+
+        #region Resultado
+        [TestMethod]
+        [TestCategory("Resultado")]
+        public void ResultadoVerificaGanaste()
+        {
+            // Arrange
+            Sut.IngresarLetra('h');
+            Sut.IngresarLetra('o');
+            Sut.IngresarLetra('l');
+            Sut.IngresarLetra('a');
+
+            // Act
+            var resultado = Sut.Resultado;
+
+            // Assert
+            resultado.Should().Be(EnumResultados.Ganaste);
+        }
+        [TestMethod]
+        [TestCategory("Resultado")]
+        public void ResultadoVerificaPerdiste()
+        {
+            // Arrange
+            Sut.IngresarLetra('w');
+            Sut.IngresarLetra('x');
+            Sut.IngresarLetra('y');
+            Sut.IngresarLetra('z');
+            Sut.IngresarLetra('q');
+            Sut.IngresarLetra('r');
+
+            // Act
+            var resultado = Sut.Resultado;
+
+            // Assert
+            resultado.Should().Be(EnumResultados.Perdiste);
+        }
+        [TestMethod]
+        [TestCategory("Resultado")]
+        public void ResultadoVerificaEnJuego()
+        {
+            // Arrange
+            Sut.IngresarLetra('h');
+            Sut.IngresarLetra('o');
+            Sut.IngresarLetra('l');
+
+            // Act
+            var resultado = Sut.Resultado;
+
+            // Assert
+            resultado.Should().Be(EnumResultados.EnJuego);
+        }
+        [TestMethod]
+        [TestCategory("Resultado")]
+        public void ResultadoArriesgarPalabraVerificaGanaste()
+        {
+            // Act
+            var resultado = Sut.ArriesgarPalabra(PalabraCorrecta);
+
+            // Assert
+            resultado.Should().Be(EnumResultados.Ganaste);
+        }
+        [TestMethod]
+        [TestCategory("Resultado")]
+        public void ResultadoArriesgarPalabraVerificaPerdiste()
+        {
+            // Act
+            var resultado = Sut.ArriesgarPalabra("chau");
+
+            // Assert
+            resultado.Should().Be(EnumResultados.Perdiste);
+        }
         #endregion
     }
 }
