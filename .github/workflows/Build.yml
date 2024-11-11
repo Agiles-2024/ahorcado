@@ -25,6 +25,15 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
+      - name: Start application server
+        run: dotnet run --project ./UI --urls "http://localhost:5299" &
+
+      - name: Install wait-on
+        run: sudo npm install -g wait-on
+
+      - name: Wait for server to be ready
+        run: wait-on http://localhost:5299
+
       - name: Run tests with OpenCover
         run: |
           dotnet test --configuration Release \
