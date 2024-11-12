@@ -26,19 +26,35 @@
         juego = new Ahorcado(palabra);
         mensaje = string.Empty;
     }
+    
     private void IngresarLetra()
     {
-        if (juego.IngresarLetra(letraIngresada))
+        var letterGuessed = juego.IngresarLetra(letraIngresada);
+
+        if (juego.Resultado == EnumResultados.Ganaste)
+        {
+            mensaje = "¡Ganaste!";
+            
+            return;
+        }
+
+        if (juego.Resultado == EnumResultados.Perdiste)
+        {
+            mensaje = "¡Perdiste!";
+            
+            return;
+        }
+
+
+        if (letterGuessed)
         {
             mensaje = $"Letra '{letraIngresada}' encontrada!";
             letraIngresada = '\0';
         }
         else
+        {
             mensaje = $"Letra '{letraIngresada}' no encontrada.";
-
-        if (juego.EstaTerminado())
-            mensaje = "¡Felicidades, has ganado!";
-
+        }
     }
 
     private void ArriesgarPalabra()
