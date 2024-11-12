@@ -61,6 +61,22 @@ public class AhorcadoStepDefinitions
         wordInput?.SendKeys(word);
         guessBtn?.Click();
     }
+    
+    [When(@"I enter the letters ""(.*)""")]
+    public void WhenIEnterTheLetters(string letters)
+    {
+        var charInput = _driver?.FindElement(By.Id("charInput"));
+        var btnTry = _driver?.FindElement(By.Id("tryBtn"));
+        
+        var lettersArray = letters.Split(',');
+
+        foreach (var letter in lettersArray)
+        {
+            charInput?.Clear();
+            charInput?.SendKeys(letter);
+            btnTry?.Click();
+        }
+    }
 
     [Then(@"I should see the message ""(.*)""")]
     public void ThenIShouldSeeTheMessage(string expectedMessage)

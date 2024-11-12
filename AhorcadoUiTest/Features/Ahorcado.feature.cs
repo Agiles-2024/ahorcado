@@ -162,14 +162,14 @@ namespace AhorcadoUiTest.Features
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Winning the Game")]
+        [Xunit.SkippableFactAttribute(DisplayName="Winning the Game Guessing The Whole Word")]
         [Xunit.TraitAttribute("FeatureTitle", "Ahorcado")]
-        [Xunit.TraitAttribute("Description", "Winning the Game")]
-        public virtual void WinningTheGame()
+        [Xunit.TraitAttribute("Description", "Winning the Game Guessing The Whole Word")]
+        public virtual void WinningTheGameGuessingTheWholeWord()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Winning the Game", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Winning the Game Guessing The Whole Word", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 13
   this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -198,6 +198,88 @@ namespace AhorcadoUiTest.Features
 #line hidden
 #line 16
     testRunner.Then("I should see the message \"¡Ganaste!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Winning the Game inputting letter by letter")]
+        [Xunit.TraitAttribute("FeatureTitle", "Ahorcado")]
+        [Xunit.TraitAttribute("Description", "Winning the Game inputting letter by letter")]
+        public virtual void WinningTheGameInputtingLetterByLetter()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Winning the Game inputting letter by letter", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 18
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 19
+    testRunner.Given("I navigate to the game page with word \"test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 20
+    testRunner.When("I enter the letters \"t,e,s\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 21
+    testRunner.Then("I should see the message \"¡Ganaste!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Losing the Game inputting letter by letter")]
+        [Xunit.TraitAttribute("FeatureTitle", "Ahorcado")]
+        [Xunit.TraitAttribute("Description", "Losing the Game inputting letter by letter")]
+        public virtual void LosingTheGameInputtingLetterByLetter()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Losing the Game inputting letter by letter", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 23
+  this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 24
+    testRunner.Given("I navigate to the game page with word \"test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 25
+    testRunner.When("I enter the letters \"a,c,v,b,w,r\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 26
+    testRunner.Then("I should see the message \"¡Perdiste!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
