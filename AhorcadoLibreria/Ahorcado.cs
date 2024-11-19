@@ -25,26 +25,27 @@ namespace AhorcadoLibreria
 
 		public bool IngresarLetra(char letra)
 		{
-			var valido = Regex.IsMatch(letra.ToString(), FixedRegex.NoCaracteresEspecialesNumerosOTildes);
+			// var valido = Regex.IsMatch(letra.ToString(), FixedRegex.NoCaracteresEspecialesNumerosOTildes);
 
-			if (!valido)
-				return false;
+			// if (!valido)
+			// 	return false;
 
-			var encontro = Palabra.Contains(letra, StringComparison.OrdinalIgnoreCase);
+			// var encontro = Palabra.Contains(letra, StringComparison.OrdinalIgnoreCase);
 
-			if (!encontro)
-			{
-				Vidas--;
-				return false;
-			}
+			// if (!encontro)
+			// {
+			// 	Vidas--;
+			// 	return false;
+			// }
 
-			foreach (var l in Adivinadas)
-			{
-				if (!l.IsAdivinada)
-					l.IsAdivinada = l.Letra.ToString().Equals(letra.ToString(), StringComparison.OrdinalIgnoreCase);
-			}
+			// foreach (var l in Adivinadas)
+			// {
+			// 	if (!l.IsAdivinada)
+			// 		l.IsAdivinada = l.Letra.ToString().Equals(letra.ToString(), StringComparison.OrdinalIgnoreCase);
+			// }
 
-			return true;
+			// return true;
+			return false;
 		}
 
 
